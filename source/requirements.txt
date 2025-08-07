@@ -1,0 +1,17 @@
+numpy==1.26.4
+rdkit==2023.9.6
+pytorch-lightning==2.5.1
+torch-geometric==2.6.1
+crem==0.2.14
+openbabel-wheel==3.1.1.22
+exmol==3.3.0
+pandas==2.2.3
+pytdc==0.4.17
+scikit-learn==1.5.2
+scipy==1.15.3
+networkx==3.4.2
+imageio==2.37.0
+biopython==1.85
+wandb==0.19.11
+tqdm==4.67.1
+matplotlib==3.10.3

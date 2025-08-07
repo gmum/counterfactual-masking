@@ -1,0 +1,4 @@
+[submodule "DiffLinker"]
+	path = DiffLinker
+	url = https://github.com/igashov/DiffLinker.git
+	branch = main

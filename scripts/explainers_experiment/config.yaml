@@ -1,0 +1,94 @@
+DATA:
+
+  ADME_DATASETS:
+    CYP3A4_Veith:
+      task_type: classification
+    CYP2D6_Veith:
+      task_type: classification
+    Solubility_AqSolDB:
+      task_type: regression
+    Lipophilicity_AstraZeneca:
+      task_type: regression
+
+  TOX_DATASETS:
+    hERG_Karim:
+      task_type: classification
+
+  SPLIT:
+    random_seed: 42
+    count: 3
+    FRACTION:
+      train: 0.75
+      valid: 0.10
+      test:  0.15
+
+  TRANSFORM:
+    protonate: False
+    min_heavy_atoms: 5
+
+MODEL:
+
+  VARIANTS:
+    LargeGIN:
+      architecture: ModelGIN
+      hidden_size: 512
+      dropout: 0.3
+    MediumGIN:
+      architecture: ModelGIN
+      hidden_size: 128
+      dropout: 0.1
+    SmallGIN:
+      architecture: ModelGIN
+      hidden_size: 32
+      dropout: 0.0
+    ResidualGIN:
+      architecture: ModelResidualGIN
+      hidden_size: 64
+      n_layers: 3
+      dropout: 0.1
+    EdgeGIN:
+      architecture: ModelEdgeGIN
+      hidden_size: 128
+      dropout: 0.1
+    GAT:
+      architecture: ModelGAT
+      hidden_size: 64
+      n_heads: 3
+      dropout: 0.1
+
+  TRAINING:
+    even_if_model_file_exists: False
+    random_seed: 42
+    device: cuda
+    LOADER:
+      batch_size: 64
+    TRAINER:
+      n_epochs: 300
+      initial_lr: 0.0003
+      lr_scheduler_every_epochs: 10
+      lr_scheduler_scaling_factor: 0.85
+      max_epochs_without_improvement: 30
+
+EXPLANATION:
+  methods:
+    - saliency
+    - igradients
+    - gradcam
+#   - gnnexplainer_node_object
+    - gnnexplainer_node_attributes
+    - random
+
+MASKING:
+  random_seed: 42
+  device: cuda
+  methods:
+    - feature_zeroing
+#   - feature_zeroing_rings
+    - counterfactual_difflinker
+#   - counterfactual_difflinker_rings
+#   - counterfactual_crem
+    - counterfactual_crem_rings
+  atom_proportions:
+    - 0.10
+
+output_folder_name: OUTPUT
