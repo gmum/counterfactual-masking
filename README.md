@@ -5,18 +5,17 @@
 ## Setup
 The project uses **Python 3.11.5**.
 ```bash
-# Re-add DiffLinker as a submodule (submodules do not work in anonymized versions of repositories)
-rm -rf DiffLinker
-git submodule add --branch main https://github.com/igashov/DiffLinker.git DiffLinker
-cd DiffLinker
+git clone --branch main --recurse-submodules git@github.com:gmum/counterfactual-masking.git
+
+cd counterfactual-masking/DiffLinker
 # Download the DiffLinker model checkpoint
-mkdir models
+mkdir -p models
 wget https://zenodo.org/record/7121300/files/zinc_difflinker_given_anchors.ckpt?download=1 -O models/zinc_difflinker_given_anchors.ckpt
 cd ../
 
 # Download and extract the CReM dataset (ChEMBL22)
 mkdir data
-wget https://www.qsar4u.com/files/cremdb/chembl22_sa2.db.gz -O data/chembl22_sa2.db
+wget https://www.qsar4u.com/files/cremdb/chembl22_sa2.db.gz -O data/chembl22_sa2.db.gz
 gunzip data/chembl22_sa2.db.gz
 
 # Libraries
