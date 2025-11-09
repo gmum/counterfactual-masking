@@ -10,16 +10,16 @@ git clone --branch main --recurse-submodules git@github.com:gmum/counterfactual-
 cd counterfactual-masking/DiffLinker
 # Download the DiffLinker model checkpoint
 mkdir -p models
-wget https://zenodo.org/record/7121300/files/zinc_difflinker_given_anchors.ckpt?download=1 -O models/zinc_difflinker_given_anchors.ckpt
+wget "https://zenodo.org/record/7121300/files/zinc_difflinker_given_anchors.ckpt?download=1" -O models/zinc_difflinker_given_anchors.ckpt
 cd ../
 
 # Download and extract the CReM dataset (ChEMBL22)
 mkdir data
-wget https://www.qsar4u.com/files/cremdb/chembl22_sa2.db.gz -O data/chembl22_sa2.db.gz
+wget "https://www.qsar4u.com/files/cremdb/chembl22_sa2.db.gz" -O data/chembl22_sa2.db.gz
 gunzip data/chembl22_sa2.db.gz
 
 # Libraries
-pip install torch==2.5.1+cu124 --index-url https://download.pytorch.org/whl/cu124
+pip install torch==2.5.1+cu124 --index-url "https://download.pytorch.org/whl/cu124"
 pip install -r requirements.txt
 
 # DiffLinker
