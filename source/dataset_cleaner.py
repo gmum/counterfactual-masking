@@ -145,7 +145,7 @@ def process_pairs_dataset(path, model, featurizer, device, number_of_anchors=Non
             common_atoms = mol.GetSubstructMatch(Chem.MolFromSmiles(main_smile))
             all_atoms = list(range(mol.GetNumAtoms()))
             non_common_atoms = [atom for atom in all_atoms if atom not in common_atoms]
-            anchors = find_anchors(mol, non_common_atoms, original_indexes=True)
+            anchors = find_anchors(mol, non_common_atoms, original_indices=True)
             if number_of_anchors is None:
                 if len(anchors) > 0:
                     new_filtered.append(m)
@@ -165,7 +165,7 @@ def process_pairs_dataset(path, model, featurizer, device, number_of_anchors=Non
                     common_atoms = mol.GetSubstructMatch(Chem.MolFromSmiles(main_smile))
                     all_atoms = list(range(mol.GetNumAtoms()))
                     non_common_atoms = [atom for atom in all_atoms if atom not in common_atoms]
-                    anchors = find_anchors(mol, non_common_atoms, original_indexes=True, diffLinker=False)
+                    anchors = find_anchors(mol, non_common_atoms, original_indices=True, diffLinker=False)
                     index_of_anchors_in_common_part = set()
                     for anchor in anchors:
                         index_of_anchors_in_common_part.add(common_atoms.index(anchor))
