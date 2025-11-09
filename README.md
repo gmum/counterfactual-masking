@@ -60,12 +60,12 @@ python -m scripts.pairs_experiment.pairs_prediction --output_folder single_ancho
 * **Multiple anchors**
 
 ```bash
-python -m scripts.both_masking.pairs_prediction_both --output_folder 2_or_more_anchors_output  --model_path gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_15.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --number_of_anchors 2 --same_anchors
+python -m scripts.pairs_experiment.pairs_prediction --output_folder 2_or_more_anchors_output  --model_path gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_15.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --number_of_anchors 2 --same_anchors
 ```
 
 * **No anchor restrictions (Both variants)**
 ```bash
-python -m scripts.both_masking.pairs_prediction_both --output_folder no_restrictions_output  --model_path gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_15.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors
+python -m scripts.pairs_experiment.pairs_prediction --output_folder no_restrictions_output  --model_path gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_15.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors
 ```
 
 ### Step 3: View the Results
