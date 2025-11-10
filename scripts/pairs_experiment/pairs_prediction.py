@@ -9,12 +9,14 @@ from tqdm import tqdm
 import torch
 from torch_geometric.loader import DataLoader as GraphDataLoader
 from rdkit import Chem
+from tdc.single_pred import ADME
+from sklearn.metrics import mean_absolute_error
 
 from source.featurizers.graphs import Featurizer2D
 from source.models import GraphIsomorphismNetwork
 from source.changer import feature_zeroing
 from source.linksGenerator import diffLinker_fragment_replacement, crem_fragment_replacement
-from source.dataset_cleaner import process_pairs_dataset
+from source.dataset_cleaner import process_pairs_dataset, process_dataset
 
 
 def parse_args():
@@ -39,6 +41,15 @@ def load_model(model_path, size_model, device):
     model.to(device).eval()
     return model
 
+def load_test_data(featurizer, batch_size=64):
+   dataset_name = "Solubility_AqSolDB"
+   data = ADME(dataset_name)
+   split = data.get_split()
+   split_data = featurizer(split=split, path='./results')
+
+   x_test = process_dataset(split_data["test"], featurizer)
+   test_loader = GraphDataLoader(x_test, batch_size=batch_size, shuffle=False)
+   return test_loader
 
 def save_batch(output_folder, batch_id, embeddings, targets, output):
     np.save(f"{output_folder}/embeddings_batch_{batch_id}.npy", embeddings)
@@ -149,15 +160,35 @@ def main():
     output_folder = args.output_folder
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
+    if not os.path.exists("test_set_distribution"):
+        os.makedirs("test_set_distribution")
 
     batch_size = 64
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     featurizer = Featurizer2D('Y', 'Drug')
     model = load_model(args.model_path, args.size_model, device)
+    test_loader = load_test_data(featurizer, batch_size)
 
     embeddings = []
     targets = []
     model.eval()
+    y_true, y_pred = [], []
+    
+    model.eval()
+    with torch.no_grad():
+        for data in tqdm(test_loader):
+            data = data.to(device)
+            y = data.y.flatten()
+            out = model.predict(model, data, return_representations=True)
+            embeddings.extend(out.cpu())
+            targets.extend(data.y.cpu().numpy()*0)
+            preds = model.predict(model, data).flatten()
+            y_true.extend(y.cpu().numpy())
+            y_pred.extend(preds.cpu().numpy())
+
+    print("MAE:", mean_absolute_error(y_true, y_pred))
+    save_batch("test_set_distribution", 1, embeddings, targets, [])
+    print("Test set embeddings and targets saved.")
 
     pairs_array = process_pairs_dataset(args.pairs_dataset, model, featurizer, device, args.number_of_anchors, args.same_anchors)
     
