@@ -25,6 +25,20 @@ pip install -r requirements.txt
 # DiffLinker
 pip install -e .
 ```
+## Usage
+To mask selected atoms in your molecules, you can use one of the following functions:
+```bash
+from source.linksGenerator import crem_fragment_replacement, diffLinker_fragment_replacement
+
+output = diffLinker_fragment_replacement(mol: rdkit.Chem.Mol, toDelete: list[int])
+output = crem_fragment_replacement(mol: rdkit.Chem.Mol, toDelete: list[int])
+```
+- mol — the input molecule in which you want to mask a fragment.
+- toDelete — a list of atom indices (nodes) that should be masked.
+
+The output is a set of molecules where the specified atoms have been replaced according to the chosen masking strategy.
+
+## Reproducing the Results
 
 ## Dataset: Common Substructure Pair
 
