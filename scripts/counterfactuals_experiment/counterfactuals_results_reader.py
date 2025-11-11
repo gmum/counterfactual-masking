@@ -6,18 +6,19 @@ import pickle
 import gc
 import argparse
 import os
-
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from scripts.counterfactuals_experiment.helpers_counterfactual import counterfactuals_metrics, similarity, fix_radicals
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", type=str, required=True)
+    parser.add_argument("--dataset", type=str, default="CYP2D6_Veith", help="Name of the dataset.")
     return parser.parse_args()
 
-def get_matching_folders(parent_dir, prefix):
+def get_matching_entries(parent_dir, prefix):
     return [
         name for name in os.listdir(parent_dir)
-        if os.path.isdir(os.path.join(parent_dir, name)) and name.startswith(prefix)
+        if name.startswith(prefix)
     ]
 
 def print_summary(name, metrics):
@@ -142,8 +143,9 @@ def is_single_molecule(smiles):
 
 def main():
     args = parse_args()
-    folders = get_matching_folders(f"results_{args.dataset}", "result_counterfactuals")
-    
+    folders = get_matching_entries(f"results_{args.dataset}", "result_counterfactuals")
+    folders = [os.path.join(f"results_{args.dataset}", folder) for folder in folders]
+
     all_metrics = {
         'gnnexplainer_nodes': {},
         'exmol': {},
@@ -153,10 +155,12 @@ def main():
         }
 
     for folder in folders:
-        pkl_files = get_matching_folders(folder, "counterfactual_predictions_")
+        pkl_files = get_matching_entries(folder, "counterfactual_predictions_")
+        pkl_files_sorted = sorted(pkl_files, key=lambda x: int(x.split('_')[-1].split('.')[0]))
         counterfactual_predictions_list = []
-        for file in pkl_files:
-            with open(file, 'rb') as f:
+        for file in pkl_files_sorted:
+            file_path = os.path.join(folder, file)
+            with open(file_path, 'rb') as f:
                 counterfactual_predictions_list.append(pickle.load(f))
 
         counter_predictions = {}
@@ -165,10 +169,12 @@ def main():
                 if key not in counter_predictions:
                     counter_predictions[key] = []
                 counter_predictions[key].extend(value)
-        results_files = get_matching_folders(folder, "counterfactual_results_")
+        results_files = get_matching_entries(folder, "counterfactual_results_")
         results_list = []
-        for file in results_files:
-            with open(file, 'rb') as f:
+        results_files_sorted = sorted(results_files, key=lambda x: int(x.split('_')[-1].split('.')[0]))
+        for file in results_files_sorted:
+            file_path = os.path.join(folder, file)
+            with open(file_path, 'rb') as f:
                 results_list.append(pickle.load(f))
 
         counter_results = {}
