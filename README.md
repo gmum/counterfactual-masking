@@ -162,13 +162,11 @@ This study was funded by the ”Interpretable and Interactive Multimodal Retriev
 If you find this work useful, please cite our paper:
 
 ```
-@misc{janisiow2025counterfactualmasking,
-  title={Enhancing Chemical Explainability Through Counterfactual Masking},
-  author={Janisiów, Łukasz and Kochańczyk, Marek and Zieliński, Bartosz and Danel, Tomasz},
-  year={2025},
-  eprint={2508.18561},
-  archivePrefix={arXiv},
-  primaryClass={cs.LG},
-  url={https://arxiv.org/abs/2508.18561}
-}
+@article{janisiow2026counterfactualmasking,
+   title={Enhancing Chemical Explainability Through Counterfactual Masking},
+   journal={Proceedings of the AAAI Conference on Artificial Intelligence},
+   publisher={Association for the Advancement of Artificial Intelligence (AAAI)},
+   author={Janisiów, Łukasz and Kochańczyk, Marek and Zieliński, Bartosz and Danel, Tomasz},
+   year={2026}
+   }
 ```
