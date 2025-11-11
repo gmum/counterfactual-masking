@@ -143,8 +143,8 @@ def is_single_molecule(smiles):
 
 def main():
     args = parse_args()
-    folders = get_matching_entries(f"results_{args.dataset}", "result_counterfactuals")
-    folders = [os.path.join(f"results_{args.dataset}", folder) for folder in folders]
+    folders = get_matching_entries(f"results_counterfactuals_experiment/results_{args.dataset}", "result_counterfactuals")
+    folders = [os.path.join(f"results_counterfactuals_experiment/results_{args.dataset}", folder) for folder in folders]
 
     all_metrics = {
         'gnnexplainer_nodes': {},

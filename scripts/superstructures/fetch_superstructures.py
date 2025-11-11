@@ -27,7 +27,7 @@ def main():
     featurizer = Featurizer2D('Y', 'Drug')
     split_data = featurizer(
         split=split,
-        path='../../results',
+        path=f'./data/splits/{dataset}',
     )
 
     x_test = split_data["test"]

@@ -2,6 +2,12 @@
 
 ![Masking Example](images/counterfactual_masking.png)
 
+## Abstract
+Molecular property prediction is a crucial task that guides the design of new compounds, including drugs and materials. While explainable artificial intelligence methods aim to scrutinize model predictions by identifying influential molecular substructures, many existing approaches rely on masking strategies that remove either atoms or atom-level features to assess importance via fidelity metrics. These methods, however, often fail to adhere to the underlying molecular distribution and thus yield unintuitive explanations. In this work, we propose counterfactual masking, a novel framework that replaces masked substructures with chemically reasonable fragments sampled from generative models trained to complete molecular graphs. Rather than evaluating masked predictions against implausible zeroed-out baselines, we assess them relative to counterfactual molecules drawn from the data distribution. Our method offers two key benefits: (1) molecular realism underpinning robust and distribution-consistent explanations, and (2) meaningful counterfactuals that directly indicate how structural modifications may affect predicted properties. We demonstrate that counterfactual masking is well-suited for benchmarking model explainers and yields more actionable insights across multiple datasets and property prediction tasks. Our approach bridges the gap between explainability and molecular design, offering a principled and generative path toward explainable machine learning in chemistry.
+
+### [Paper](https://arxiv.org/abs/2508.18561)
+
+
 ## Setup
 The project uses **Python 3.11.5**.
 ```bash
@@ -25,6 +31,8 @@ pip install -r requirements.txt
 # DiffLinker
 pip install -e .
 ```
+
+
 ## Usage
 To mask selected atoms in your molecules, you can use one of the following functions:
 ```bash
@@ -68,18 +76,18 @@ python -m source.train --model_size 512 --dropout 0.3 --batch_size 64 --seed 5
 * **Single anchor**
 
 ```bash
-python -m scripts.pairs_experiment.pairs_prediction --output_folder single_anchor_output  --model_path gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors --number_of_anchors 1
+python -m scripts.pairs_experiment.pairs_prediction --output_folder single_anchor_output  --model_path checkpoints/gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors --number_of_anchors 1
 ```
 
 * **Multiple anchors**
 
 ```bash
-python -m scripts.pairs_experiment.pairs_prediction --output_folder 2_or_more_anchors_output  --model_path gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --number_of_anchors 2 --same_anchors
+python -m scripts.pairs_experiment.pairs_prediction --output_folder 2_or_more_anchors_output  --model_path checkpoints/gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --number_of_anchors 2 --same_anchors
 ```
 
 * **No anchor restrictions (Both variants)**
 ```bash
-python -m scripts.pairs_experiment.pairs_prediction --output_folder no_restrictions_output  --model_path gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors
+python -m scripts.pairs_experiment.pairs_prediction --output_folder no_restrictions_output  --model_path checkpoints/gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors
 ```
 
 ### Step 3: View the Results
@@ -108,7 +116,7 @@ python -m scripts.counterfactuals_experiment.counterfactuals_generation --model_
 | `--model_size` | Hidden size of the model          | `512`                                                                                  |
 | `--seed`       | Random seed                       | `5`, `15`, `25`                                                                        |
 | `--dataset`    | Name of the dataset               | `CYP3A4_Veith`, `CYP2D6_Veith`, `hERG`                                                 |
-| `--model_path` | Path to the trained model file    | e.g., `models/gin_cyp2d6_veith/model_CYP2D6_Veith_hidden_512_dropout_0.3_seed_15.pth`        |
+| `--model_path` | Path to the trained model file    | e.g., `checkpoints/gin_cyp2d6_veith/model_CYP2D6_Veith_hidden_512_dropout_0.3_seed_15.pth`        |
 
 
 ### Step 3: View the Results
@@ -140,4 +148,27 @@ Experiment parameters are defined in `scripts/explainers_experiment/config.yaml`
 ### Step 3: Summmary of results (Table 3)
 ```bash
 (cd scripts/explainers_experiment && jupyter execute step_03_summary.ipynb)
+```
+
+
+## License and legal
+
+This project is released under the MIT License.
+
+## Funding
+This study was funded by the ”Interpretable and Interactive Multimodal Retrieval in Drug Discovery” project. The ”Interpretable and Interactive Multimodal Retrieval in Drug Discovery” project (FENG.02.02-IP.05-0040/23) is carried out within the First Team programme of the Foundation for Polish Science co-financed by the European Union under the European Funds for Smart Economy 2021-2027 (FENG). We gratefully acknowledge Polish high-performance computing infrastructure PLGrid (HPC Center: ACK Cyfronet AGH) for providing computer facilities and support within computational grant no. PLG/2025/018272.
+
+## Citation
+If you find this work useful, please cite our paper:
+
+```
+@misc{janisiow2025counterfactualmasking,
+  title={Enhancing Chemical Explainability Through Counterfactual Masking},
+  author={Janisiów, Łukasz and Kochańczyk, Marek and Zieliński, Bartosz and Danel, Tomasz},
+  year={2025},
+  eprint={2508.18561},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2508.18561}
+}
 ```

@@ -45,16 +45,16 @@ def load_test_data(featurizer, batch_size=64):
    dataset_name = "Solubility_AqSolDB"
    data = ADME(dataset_name)
    split = data.get_split()
-   split_data = featurizer(split=split, path='./results')
+   split_data = featurizer(split=split, path='./data/splits/{dataset_name}')
 
    x_test = process_dataset(split_data["test"], featurizer)
    test_loader = GraphDataLoader(x_test, batch_size=batch_size, shuffle=False)
    return test_loader
 
 def save_batch(output_folder, batch_id, embeddings, targets, output):
-    np.save(f"{output_folder}/embeddings_batch_{batch_id}.npy", embeddings)
-    np.save(f"{output_folder}/targets_batch_{batch_id}.npy", np.array(targets, dtype = object))
-    with open(f"{output_folder}/predictions_batch_{batch_id}.pkl", "wb") as f:
+    np.save(f"results_pairs_experiment/{output_folder}/embeddings_batch_{batch_id}.npy", embeddings)
+    np.save(f"results_pairs_experiment/{output_folder}/targets_batch_{batch_id}.npy", np.array(targets, dtype = object))
+    with open(f"results_pairs_experiment/{output_folder}/predictions_batch_{batch_id}.pkl", "wb") as f:
         pickle.dump(output, f)
 
 def make_prediction(index_mol, row, featurizer, model, batch_size, device, max_replacements, save_all_generated = False):
@@ -158,10 +158,10 @@ def main():
     args = parse_args()
     
     output_folder = args.output_folder
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    if not os.path.exists("test_set_distribution"):
-        os.makedirs("test_set_distribution")
+    if not os.path.exists(f"results_pairs_experiment/{output_folder}"):
+        os.makedirs(f"results_pairs_experiment/{output_folder}")
+    if not os.path.exists("results_pairs_experiment/test_set_distribution"):
+        os.makedirs("results_pairs_experiment/test_set_distribution")
 
     batch_size = 64
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

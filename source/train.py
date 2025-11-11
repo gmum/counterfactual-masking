@@ -75,7 +75,7 @@ def main():
     parser.add_argument("--seed", type=int, required=False, default=15)
     parser.add_argument("--dropout", type=float, required=False, default=0.15)
     parser.add_argument("--batch_size", type=int, required=False, default=64)
-    parser.add_argument("--path", type=str, required=False, default="gin")
+    parser.add_argument("--path", type=str, required=False, default="checkpoints/gin")
     args = parser.parse_args()
 
     seed = args.seed
@@ -111,7 +111,7 @@ def main():
     featurizer = Featurizer2D('Y', 'Drug')
     split_data = featurizer(
         split=split,
-        path='./results',
+        path=f'./data/splits/{dataset}',
     )
 
     x_train = split_data["train"]

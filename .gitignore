@@ -1,0 +1,7 @@
+/.venv
+/data
+/data_diff
+__pycache__/
+/checkpoints
+/results_pairs_experiment
+/results_counterfactuals_experiment

@@ -105,13 +105,13 @@ def main():
     epochs = 300
     batch_size = args.batch_size
 
-    os.makedirs(f"models/gin_{args.dataset.lower()}", exist_ok=True)
+    os.makedirs(f"checkpoints/gin_{args.dataset.lower()}", exist_ok=True)
 
     data_module = get_data_module(args.dataset)
     split = data_module.get_split(seed = seed)
     
     featurizer = Featurizer2D('Y', 'Drug')
-    data_dir = f"./results_{args.dataset}"
+    data_dir = f"./data/splits/{args.dataset}"
     split_data = featurizer(split=split, path=data_dir)
 
     # Remove salts and process datasets
@@ -144,7 +144,7 @@ def main():
     # )
 
     best_val_loss = float('inf')
-    best_path = f"models/gin_{args.dataset.lower()}/model_{args.dataset}_hidden_{args.model_size}_dropout_{args.dropout}_seed_{args.seed}.pth"
+    best_path = f"checkpoints/gin_{args.dataset.lower()}/model_{args.dataset}_hidden_{args.model_size}_dropout_{args.dropout}_seed_{args.seed}.pth"
     wait = 0
     # Training loop
     for epoch in trange(1, epochs + 1, desc="Epochs"):

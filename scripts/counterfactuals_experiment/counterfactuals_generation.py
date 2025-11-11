@@ -45,7 +45,7 @@ def main():
     data_module = get_data_module(args.dataset)
     device = torch.device("cpu")
     featurizer = Featurizer2D('Y', 'Drug')
-    data_dir = f"./results_{args.dataset}"
+    data_dir = f"./data/splits/{args.dataset}"
     split = data_module.get_split()
     split_data = featurizer(split=split, path=data_dir)
     x_test = process_dataset(split_data['test'], featurizer)
@@ -53,7 +53,7 @@ def main():
     model = load_model(args.model_path, device)
     model.to(device).eval()
 
-    save_path = f"results_{args.dataset}/result_counterfactuals_{args.seed}"
+    save_path = f"results_counterfactuals_experiment/results_{args.dataset}/result_counterfactuals_{args.seed}"
 
     os.makedirs(save_path, exist_ok=True)
 
