@@ -166,7 +166,7 @@ If you find this work useful, please cite our paper:
    title={Enhancing Chemical Explainability Through Counterfactual Masking},
    journal={Proceedings of the AAAI Conference on Artificial Intelligence},
    publisher={Association for the Advancement of Artificial Intelligence (AAAI)},
-   author={Janisiów, Łukasz and Kochańczyk, Marek and Zieliński, Bartosz and Danel, Tomasz},
+   author={Janisi{\'o}w, {\L}ukasz and Kocha{\'n}czyk, Marek and Zieli{\'n}ski, Bartosz and Danel, Tomasz},
    year={2026}
    }
 ```
