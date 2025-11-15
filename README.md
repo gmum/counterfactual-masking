@@ -156,7 +156,7 @@ Experiment parameters are defined in `scripts/explainers_experiment/config.yaml`
 This project is released under the MIT License.
 
 ## Funding
-This study was funded by the ”Interpretable and Interactive Multimodal Retrieval in Drug Discovery” project. The ”Interpretable and Interactive Multimodal Retrieval in Drug Discovery” project (FENG.02.02-IP.05-0040/23) is carried out within the First Team programme of the Foundation for Polish Science co-financed by the European Union under the European Funds for Smart Economy 2021-2027 (FENG). We gratefully acknowledge Polish high-performance computing infrastructure PLGrid (HPC Center: ACK Cyfronet AGH) for providing computer facilities and support within computational grant no. PLG/2025/018272.
+The work of Ł.J., M.K., and B.Z. was funded by the "Interpretable and Interactive Multimodal Retrieval in Drug Discovery" project. The "Interpretable and Interactive Multimodal Retrieval in Drug Discovery” project (FENG.02.02-IP.05-0040/23) is carried out within the First Team programme of the Foundation for Polish Science co-financed by the European Union under the European Funds for Smart Economy 2021-2027 (FENG). The work of T.D. was carried out within the "AI-Based Virtual Screening Assistant" project (LIDER15/0033/2024) funded by the National Center for Research and Development (Poland) under the LIDER XV program. We gratefully acknowledge Polish high-performance computing infrastructure PLGrid (HPC Center: ACK Cyfronet AGH) for providing computer facilities and support within computational grant no. PLG/2025/018272.
 
 ## Citation
 If you find this work useful, please cite our paper:
