@@ -40,7 +40,6 @@ hide:
         Marek Kochańczyk<br/>
         Assistant Professor<br/>
         Jagiellonian University<br/>
-        Senior ML Engineer
       </figcaption>
     </figure>
     <figure style="text-align: center;">
