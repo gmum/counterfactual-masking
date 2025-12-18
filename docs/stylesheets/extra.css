@@ -1,0 +1,12 @@
+:root {
+  --md-primary-fg-color: #FA545B;
+  --md-primary-fg-color--light: #FA545B;
+  --md-primary-fg-color--dark: #FA545B;
+
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: #ffffff;
+}
+
+.md-content img {
+  image-rendering: -webkit-optimize-contrast;
+}

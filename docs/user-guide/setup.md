@@ -1,0 +1,175 @@
+---
+hide:
+#   - toc
+  - navigation
+---
+
+<style>
+.md-button {
+    margin-bottom: .2rem;
+}
+</style>
+
+The project uses **Python 3.11.5**.
+```bash
+git clone --branch main --recurse-submodules git@github.com:gmum/counterfactual-masking.git
+
+cd counterfactual-masking/DiffLinker
+# Download the DiffLinker model checkpoint
+mkdir -p models
+wget "https://zenodo.org/record/7121300/files/zinc_difflinker_given_anchors.ckpt?download=1" -O models/zinc_difflinker_given_anchors.ckpt
+cd ../
+
+# Download and extract the CReM dataset (ChEMBL22)
+mkdir data
+wget "https://www.qsar4u.com/files/cremdb/chembl22_sa2.db.gz" -O data/chembl22_sa2.db.gz
+gunzip data/chembl22_sa2.db.gz
+
+# Libraries
+pip install torch==2.5.1+cu124 --index-url "https://download.pytorch.org/whl/cu124"
+pip install -r requirements.txt
+
+# DiffLinker
+pip install -e .
+```
+
+
+## Usage
+To mask selected atoms in your molecules, you can use one of the following functions:
+```bash
+from source.linksGenerator import crem_fragment_replacement, diffLinker_fragment_replacement
+
+output = diffLinker_fragment_replacement(mol: rdkit.Chem.Mol, toDelete: list[int])
+output = crem_fragment_replacement(mol: rdkit.Chem.Mol, toDelete: list[int])
+```
+- mol — the input molecule in which you want to mask a fragment.
+- toDelete — a list of atom indices (nodes) that should be masked.
+
+The output is a set of molecules where the specified atoms have been replaced according to the chosen masking strategy.
+
+
+## Reproducing the Results
+
+## Dataset: Common Substructure Pair
+
+**Note:** A preprocessed and filtered version of the Common Substructure Pair dataset is included in the repository and can be found in the `data_pubchem` directory.
+
+### Regenerate the Dataset
+
+To regenerate the dataset:
+
+```bash
+python -m scripts.superstructures.fetch_superstructures --output_folder data_pubchem --dataset_name common_substructure_pair_dataset
+```
+
+This script fetches superstructures from PubChem, processes them, and saves the results in the specified directory.
+
+## Pairs Experiment
+This experiment evaluates different masking strategies over pairs of molecules that share common substructures.
+
+### Step 1: Train a Model
+
+```bash
+python -m source.train --model_size 512 --dropout 0.3 --batch_size 64 --seed 5
+```
+
+### Step 2: Run Pairs Experiment 
+
+* **Single anchor**
+
+```bash
+python -m scripts.pairs_experiment.pairs_prediction --output_folder single_anchor_output  --model_path checkpoints/gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors --number_of_anchors 1
+```
+
+* **Multiple anchors**
+
+```bash
+python -m scripts.pairs_experiment.pairs_prediction --output_folder 2_or_more_anchors_output  --model_path checkpoints/gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --number_of_anchors 2 --same_anchors
+```
+
+* **No anchor restrictions (Both variants)**
+
+```bash
+python -m scripts.pairs_experiment.pairs_prediction --output_folder no_restrictions_output  --model_path checkpoints/gin/model_trained_without_salts_hidden_512_dropout_0.3_seed_5.pth --pairs_dataset data_pubchem/common_substructure_pair_dataset.json --size_model 512 --same_anchors
+```
+
+### Step 3: View the Results
+Open the following notebook to visualize results:
+```bash
+scripts/pairs_experiment/results_visualization_masking_evaluation.ipynb
+```
+
+## Counterfactuals Experiment
+
+This experiment evaluates different counterfactual generation methods.
+
+### Step 1: Train Models
+
+```bash
+python -m scripts.counterfactuals_experiment.models_training
+```
+
+### Step 2: Run Counterfactuals Experiment 
+```bash
+python -m scripts.counterfactuals_experiment.counterfactuals_generation --model_size 512  --seed <SEED> --dataset <DATASET> --model_path <MODEL_PATH>
+```
+### Parameters
+| Argument        | Description                       | Used Values                                                                 |
+|----------------|-----------------------------------|----------------------------------------------------------------------------------------|
+| `--model_size` | Hidden size of the model          | `512`                                                                                  |
+| `--seed`       | Random seed                       | `5`, `15`, `25`                                                                        |
+| `--dataset`    | Name of the dataset               | `CYP3A4_Veith`, `CYP2D6_Veith`, `hERG`                                                 |
+| `--model_path` | Path to the trained model file    | e.g., `checkpoints/gin_cyp2d6_veith/model_CYP2D6_Veith_hidden_512_dropout_0.3_seed_15.pth`        |
+
+
+### Step 3: View the Results
+
+```bash
+python -m scripts.counterfactuals_experiment.counterfactuals_results_reader --dataset <DATASET>
+```
+### Parameters
+| Argument        | Description                       | Used Values                                                                 |
+|----------------|-----------------------------------|----------------------------------------------------------------------------------------|
+| `--dataset`    | Name of the dataset               | `CYP3A4_Veith`, `CYP2D6_Veith`, `hERG`                                                 |
+
+
+## Explainers Experiment
+
+### Step 1: Train Models
+
+```bash
+(cd scripts/explainers_experiment && python step_01_training.py)
+```
+Training parameters are defined in `scripts/explainers_experiment/config.yaml`.
+
+### Step 2: Run Explainers Experiment 
+```bash
+(cd scripts/explainers_experument && python step_02_masking.py)
+```
+Experiment parameters are defined in `scripts/explainers_experiment/config.yaml`.
+
+### Step 3: Summmary of results (Table 3)
+```bash
+(cd scripts/explainers_experiment && jupyter execute step_03_summary.ipynb)
+```
+
+
+## License and legal
+
+This project is released under the MIT License.
+
+## Contact
+
+For questions, please open an issue on GitHub or contact Tomasz Danel or Łukasz Janisiów (tomasz.danel &lt;at&gt;.uj.edu.pl, lukasz.janisiow &lt;at&gt; doctoral.uj.edu.pl).
+
+<div style="text-align: center;">
+  <div style="display: inline-flex; flex-wrap: wrap; gap: 10em; align-items: center;">
+    <a href="https://en.uj.edu.pl/en/" rel="noreferrer" target="_blank"><img src="../../imgs/orgs/uj.png" alt="UJ logo" style="height: 5em"/></a>
+    <a href="https://gmum.net/" rel="noreferrer" target="_blank"><img src="../../imgs/orgs/gmum.png" alt="GMUM logo" style="height: 6em"/></a>
+    <a href="https://ellis.eu/student/2025-lukasz-janisiow" rel="noreferrer" target="_blank"><img src="../../imgs/orgs/ellis.png" alt="ELLIS logo" style="height: 6em"/></a>
+  </div>
+  <a href="https://www.fnp.org.pl/en/component/fnp_programs/program/first-team-feng-eng" rel="noreferrer" target="_blank"><img src="../../imgs/orgs/eu.png" alt="EU logo" style="height: 6em"/></a>
+</div>
+<div style="text-align: center; margin: 2em 0" markdown>
+[:material-attachment: Paper](https://arxiv.org/abs/2508.18561){ .md-button } [:material-github: Code](https://github.com/gmum/counterfactual-masking){ .md-button } [:material-rocket: Get started](../user-guide/setup.md){ .md-button .md-button--primary }
+</div>
