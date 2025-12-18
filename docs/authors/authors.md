@@ -24,7 +24,7 @@ hide:
       <figcaption>
         Łukasz Janisiów<br/>
         PhD Candidate<br/>
-        Jagiellonian Univeristy<br/>
+        Jagiellonian University<br/>
         ELLIS PhD Student
       </figcaption>
     </figure>
@@ -39,7 +39,7 @@ hide:
       <figcaption>
         Marek Kochańczyk<br/>
         Assistant Professor<br/>
-        Jagiellonian Univeristy<br/>
+        Jagiellonian University<br/>
         Senior ML Engineer
       </figcaption>
     </figure>
@@ -54,7 +54,7 @@ hide:
       <figcaption>
         Bartosz Zieliński<br/>
         Associate Professor<br/>
-        Jagiellonian Univeristy<br/>
+        Jagiellonian University<br/>
         ELLIS Member
       </figcaption>
     </figure>
@@ -69,7 +69,7 @@ hide:
       <figcaption>
         Tomasz Danel<br/>
         Post-Doc<br/>
-        Jagiellonian Univeristy<br/>
+        Jagiellonian University<br/>
         Senior ML Scientist
       </figcaption>
     </figure>
