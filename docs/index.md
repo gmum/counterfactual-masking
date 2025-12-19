@@ -16,7 +16,7 @@ hide:
 
 Łukasz Janisiów, Marek Kochańczyk, Bartosz Zieliński, Tomasz Danel
 
-Jagiellonian Univeristy, Poland
+Jagiellonian University, Poland
 
 AAAI-26 Conference Proceedings
 
